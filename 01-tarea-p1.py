@@ -16,8 +16,3 @@
 #f'(x) = (f(x+h) - f(x))/h + O(h)
 
 #Antes que nada, se deben importar los modulos a utilizar
-
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib as mp
-
