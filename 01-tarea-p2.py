@@ -182,7 +182,24 @@ plt.show()
 
 #Parte 5
 
-import scipy as sc
+import scipy.integrate as sc
+
+#sc.trapz(y,x) realiza el algortimo del metodo del trapecio sobre la funcion y en los puntos dados por x, 
+#por lo que se usara en la integral de la parte 3, es decir, en los datos del archivo de FIRAS.
+
+integral_parte3 = sc.trapz(espectro_2,frecuencia)
+print('integral_parte3 =',integral_parte3)
+
+#sc.quad(func,a,b) calcula la integral de la funcion func desde a hasta b. Este se usara para la integral de P (parte 2).
+#Para esto, se define la funcion de la integral sin el cambio de variable.
+
+def func(x):
+    y = (x**3)/(np.exp(x) - 1)
+    return y
+
+integral_parte2 = sc.quad(func, x_0, np.inf)
+print('integral_parte2 =', integral_parte2)
+
 
 
 
