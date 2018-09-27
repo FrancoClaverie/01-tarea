@@ -68,7 +68,6 @@ H = np.logspace(-0, -18, 15, base=10.)   #vector de h
 #Primero se haran los graficos de las derivadas para cada h en H, y se comparara con el valor de sin(1.559)
 
 #Grafico orden 1
-
 """
 plt.title("Valor de la derivada (error de orden 1)")
 
@@ -88,7 +87,6 @@ plt.show()
 """
 
 #Grafico orden 4
-
 """
 plt.title("Valor de la derivada (error de orden 4)")
 
@@ -117,7 +115,6 @@ diferencia_orden_4_float32 = [np.float32(m.fabs(derivada_orden_4_float32(k,h) - 
 diferencia_orden_4 = [m.fabs(derivada_orden_4(k,h) - seno) for h in H]
 
 #Grafico orden 1
-
 """
 plt.title("Diferencia con la derivada (error de orden 1)")
 
@@ -136,8 +133,7 @@ plt.show()
 """
 
 #Grafico orden 4
-
-
+"""
 plt.title("Diferencia con la derivada (error de orden 4)")
 
 plt.plot(H, diferencia_orden_4_float32, label="float32")
@@ -152,3 +148,4 @@ plt.ylabel('$|\sin_(1.559){aprox} - \sin(1.559)_{real}|$', fontsize=10)
 plt.legend()
 plt.savefig('diferencia_orden_4.png')
 plt.show()
+"""
