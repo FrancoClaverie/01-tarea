@@ -8,6 +8,18 @@ import matplotlib as mp
 import math as m
 from astropy import constants as astro   #modulo con las constantes que se usan en la funcion de Planck
 
+
+#Funcion de Planck: B = ((2*h*v**3)/c**2)/(np.exp((h*v)/(k_B*T) - 1)
+
+#c: Rapidez de la luz en el vacio
+c = astro.c.value
+#h: Constante de Planck
+h = astro.h.value
+#v: Frecuencia
+#k_B: Constante de Boltzmann
+k_B = astro.k_B.value
+#T: Temperatura
+
 #Parte 1
 
 #Se debe graficar los datos que se encuentran en el archivo dado, cuidando las unidades de medida
@@ -26,11 +38,11 @@ archivo = np.loadtxt('firas_monopole_spec_v1.txt')
 #De estas columnas nos interesan las columnas 1 (frecuencia), 2 (esectro medido) y 4 (incertidumbre/error) para la
 #realizacion del grafico.
 
-frecuencia = archivo[:,0]*100*astro.c.value          #primera columna, es de tipo np.ndarray
+frecuencia = archivo[:,0]*100*c          #primera columna, es de tipo np.ndarray
 espectro = archivo[:,1]                              #segunda columna
 error = archivo[:,3]/1000                            #cuarta columna
 
-#Se tiene que el espectro medido esta en [MJy/sr] y el error en [kJy/sr], por lo que se divide el error por mil, tambien la frecuencia
+#Se tiene que el espectro medido esta en [MJy/sr] y el error en [kJy/sr], por lo que se divide el error por mil. La frecuencia
 #esta en [cm^-1], por lo que se ultiplica por 100 y por c para quedar en [1/s = Hz]
 
 #Como el error es muy pequeño por la precision del FIRAS, se multiplica por 400 (factor sugerido como ejemplo en el enunciado)
@@ -51,7 +63,7 @@ plt.show()
 
 #Parte 2
 
-#P = *integral_{0}^{infinito}(x^3/(exp(x)-1))dx = K(T)*I
+#P = (2*h/c)*((k_B*T/h)**4)*integral_{0}^{infinito}(x^3/(exp(x)-1))dx = K(T)*I
 
 integral_analitica = (np.pi**4)/15 
 
@@ -84,7 +96,7 @@ x_0 = 0
 x_n = np.pi/2
 
 
-def valor_integral(a,b, N=10 , toler=1e-10):
+def valor_integral(a,b, N=10 , toler=1e-7):
     integral = 0
     while np.abs(integral - integral_analitica) > toler:
         integral = 0
@@ -102,8 +114,48 @@ def valor_integral(a,b, N=10 , toler=1e-10):
         integral += f_integral(a+h) + f_integral(b-h)  #se le suman los terminos inicial y final del metodo de Simpson 1/3
         integral *= h/3        
         N *= 2  #se duplica el numero de divisiones, disminuye a la mitad h
-    print('N =', N)
+    print('N =', N)  #asi sabremos en que valor quedo N
+    print('h =', h)  #asi sabremos en que valor quedo h
     return integral
+
+
+
+#Parte 3
+
+#De la parte 2: P = (2*h/c**2)*((k_B*T/h)**4)*valor_integral, donde integral ya fue calculado
+
+#Se quiere calcular T, para lo cual se calcula la integral de lo graficado en la parte 1
+
+#Para calcular la integral del espectro (del archivo) respecto a la frecuencia se usara el metodo del trapecio. Hay que
+#tener en cuenta que para poder igualarlo a P, se utilizaran dimensiones del sistema internacional, asi que hay que
+#hacer las conversiones pertinentes. Ya se habia convertido la frecuencia a Hz, pero falta pasar el espectro de MJy/sr a MW
+
+#Recordar: [MJy] = 10^−20 [Wm^−2Hz^−1] , donde el espectro es la distribucion de energia por unidad de frecuencia
+
+espectro *= 10**(-20)
+
+#Teniendo ya bien las dimensiones, se integra con el metodo del trapecio. Para usarlo no es necesario tener un h constante,
+#la distancia entre cada termino a evaluar puede ser variable y adaptarse a los puntos si es que ya se dispone de ellos.
+#h vendra dado por la distancia entre 2 frecuenciaa consecutivas, siendo el largo de las bases de los trapecios el valor del
+#espectro en dichas frecuencias
+
+integral_espectro = 0
+
+for i in range(len(frecuencia)-1):
+    integral_espectro += (espectro[i]+espectro[i+1])*(frecuencia[i+1]-frecuencia[i])/2
+
+#Igualando este resultado con P: integral_espectro = (2*h/c**2)*((k_B*T/h)**4)*valor_integral
+
+#Despejando T: T = (h/k_B)*((integral_espectro*c**2)/(valor_integral*2*h))**(1/4)
+
+T = (h/k_B)*((integral_espectro*c**2)/(valor_integral(x_0,x_n)*2*h))**(1/4)
+
+print('T =', T, '[K]')
+
+#Da T = 2.684 K, siendo que el valor real es 2.725 K, esto ocurre por arrastre de errores de aproximacion
+
+
+#Parte 4
 
 
 
