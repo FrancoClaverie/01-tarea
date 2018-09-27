@@ -63,7 +63,7 @@ seno = m.sin(k)  #valor real al que se quiere llegar con la aproximacion con foa
 #que la aproximacion sea cercana al valor real. Para esto, se probara con potencias
 #negativas de 10.
 
-H = np.logspace(-1, -15, 15, base=10.)   #vector de h
+H = np.logspace(-0, -18, 15, base=10.)   #vector de h
 
 #Primero se haran los graficos de las derivadas para cada h en H, y se comparara con el valor de sin(1.559)
 
@@ -137,7 +137,7 @@ plt.show()
 
 #Grafico orden 4
 
-"""
+
 plt.title("Diferencia con la derivada (error de orden 4)")
 
 plt.plot(H, diferencia_orden_4_float32, label="float32")
@@ -152,4 +152,3 @@ plt.ylabel('$|\sin_(1.559){aprox} - \sin(1.559)_{real}|$', fontsize=10)
 plt.legend()
 plt.savefig('diferencia_orden_4.png')
 plt.show()
-"""
