@@ -161,12 +161,12 @@ print('T =', T, '[K]')
 #de la frecuencia y de la temperatura, escrita al principio.
 
 def planck(v,T):
-    output = ((2*h*v**3)/c**2)/(np.exp((h*v)/(k_B*T) - 1))
+    output = ((2*h*v**(3))/c**(2))/(np.exp((h*v)/(k_B*T)) - 1)
     return output
 
 
 #Grafico:
-"""
+
 plt.plot(frecuencia, espectro_2, label='Medicion FIRAS (S.I.)')              #grafico parte 1 pero en S.I.
 plt.plot(frecuencia, planck(frecuencia,T), label='T calculada')       #T es la temperatura calculada en la parte 3
 plt.plot(frecuencia, planck(frecuencia,2.725), label='2.725 K')       #2.725 K es la temperatura a la que se queria llegar con T
@@ -178,7 +178,7 @@ plt.ylabel('Espectro del monopolo [$W m^{−2} Hz^{−1}/sr$]')
 plt.legend()
 plt.savefig('espectro_monopolo_2.png')
 plt.show()
-"""
+
 
 #Parte 5
 
