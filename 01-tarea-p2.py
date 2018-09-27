@@ -185,19 +185,19 @@ plt.show()
 
 diferencia_espectro = [m.fabs(espectro_2[i] - planck(frecuencia[i],2.725)) for i in range(len(frecuencia))]
 
-
+"""
 plt.title("Diferencia del espectro de FIRAS y el de Planck")
 
 plt.plot(frecuencia, diferencia_espectro)
 
 plt.yscale('log')
 
-plt.xlabel('Frecuencia [Hz]', fontsize=10)
+plt.xlabel('Frecuencia [Hz]', fontsize=15)
 plt.ylabel('Medición FIRAS - Planck en T = 2.725 [K]', fontsize=10)
 
 plt.savefig('diferencia_espectro.png')
 plt.show()
-
+"""
 
 #Parte 5
 
