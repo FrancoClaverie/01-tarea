@@ -114,8 +114,6 @@ def valor_integral(a,b, N=10 , toler=1e-7):
         integral += f_integral(a+h) + f_integral(b-h)  #se le suman los terminos inicial y final del metodo de Simpson 1/3
         integral *= h/3        
         N *= 2  #se duplica el numero de divisiones, disminuye a la mitad h
-    print('N =', N)  #asi sabremos en que valor quedo N
-    print('h =', h)  #asi sabremos en que valor quedo h
     return integral
 
 
@@ -128,11 +126,11 @@ def valor_integral(a,b, N=10 , toler=1e-7):
 
 #Para calcular la integral del espectro (del archivo) respecto a la frecuencia se usara el metodo del trapecio. Hay que
 #tener en cuenta que para poder igualarlo a P, se utilizaran dimensiones del sistema internacional, asi que hay que
-#hacer las conversiones pertinentes. Ya se habia convertido la frecuencia a Hz, pero falta pasar el espectro de MJy/sr a MW
+#hacer las conversiones pertinentes. Ya se habia convertido la frecuencia a Hz, pero falta pasar el espectro de MJy/sr a Wm^−2Hz^−1/sr
 
 #Recordar: [MJy] = 10^−20 [Wm^−2Hz^−1] , donde el espectro es la distribucion de energia por unidad de frecuencia
 
-espectro *= 10**(-20)
+espectro_2 = espectro*10**(-20)
 
 #Teniendo ya bien las dimensiones, se integra con el metodo del trapecio. Para usarlo no es necesario tener un h constante,
 #la distancia entre cada termino a evaluar puede ser variable y adaptarse a los puntos si es que ya se dispone de ellos.
@@ -142,7 +140,7 @@ espectro *= 10**(-20)
 integral_espectro = 0
 
 for i in range(len(frecuencia)-1):
-    integral_espectro += (espectro[i]+espectro[i+1])*(frecuencia[i+1]-frecuencia[i])/2
+    integral_espectro += (espectro_2[i]+espectro_2[i+1])*(frecuencia[i+1]-frecuencia[i])/2
 
 #Igualando este resultado con P: integral_espectro = (2*h/c**2)*((k_B*T/h)**4)*valor_integral
 
@@ -150,12 +148,43 @@ for i in range(len(frecuencia)-1):
 
 T = (h/k_B)*((integral_espectro*c**2)/(valor_integral(x_0,x_n)*2*h))**(1/4)
 
+"""
 print('T =', T, '[K]')
+"""
 
 #Da T = 2.684 K, siendo que el valor real es 2.725 K, esto ocurre por arrastre de errores de aproximacion
 
 
 #Parte 4
+
+#Para graficar lo echo en la parte 1 junto a los resultados obtenidos, es conveniente definir la funcion de Planck dependiente
+#de la frecuencia y de la temperatura, escrita al principio.
+
+def planck(v,T):
+    output = ((2*h*v**3)/c**2)/(np.exp((h*v)/(k_B*T) - 1))
+    return output
+
+
+#Grafico:
+"""
+plt.plot(frecuencia, espectro_2, label='Medicion FIRAS (S.I.)')              #grafico parte 1 pero en S.I.
+plt.plot(frecuencia, planck(frecuencia,T), label='T calculada')       #T es la temperatura calculada en la parte 3
+plt.plot(frecuencia, planck(frecuencia,2.725), label='2.725 K')       #2.725 K es la temperatura a la que se queria llegar con T
+
+plt.title('Espectro segun FIRAS y segun Planck')
+plt.xlabel('Frecuencia [Hz]')
+plt.ylabel('Espectro del monopolo [$W m^{−2} Hz^{−1}/sr$]')
+
+plt.legend()
+plt.savefig('espectro_monopolo_2.png')
+plt.show()
+"""
+
+#Parte 5
+
+import scipy as sc
+
+
 
 
 
