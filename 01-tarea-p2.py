@@ -166,7 +166,7 @@ def planck(v,T):
 
 
 #Grafico:
-
+"""
 plt.plot(frecuencia, espectro_2, label='Medicion FIRAS (S.I.)')              #grafico parte 1 pero en S.I.
 plt.plot(frecuencia, planck(frecuencia,T), label='T calculada')       #T es la temperatura calculada en la parte 3
 plt.plot(frecuencia, planck(frecuencia,2.725), label='2.725 K')       #2.725 K es la temperatura a la que se queria llegar con T
@@ -177,6 +177,25 @@ plt.ylabel('Espectro del monopolo [$W m^{−2} Hz^{−1}/sr$]')
 
 plt.legend()
 plt.savefig('espectro_monopolo_2.png')
+plt.show()
+"""
+
+#Como de grafico de las mediciones de FIRAS son muy cercanos a los de la funcion de Planck en T=2.725 K, es conveniente realizar
+#un grafico de la diferencia de estos.
+
+diferencia_espectro = [m.fabs(espectro_2[i] - planck(frecuencia[i],2.725)) for i in range(len(frecuencia))]
+
+
+plt.title("Diferencia del espectro de FIRAS y el de Planck")
+
+plt.plot(frecuencia, diferencia_espectro)
+
+plt.yscale('log')
+
+plt.xlabel('Frecuencia [Hz]', fontsize=10)
+plt.ylabel('Medición FIRAS - Planck en T = 2.725 [K]', fontsize=10)
+
+plt.savefig('diferencia_espectro.png')
 plt.show()
 
 
