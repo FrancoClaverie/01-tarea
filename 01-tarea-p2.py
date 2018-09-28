@@ -33,9 +33,9 @@ archivo = np.loadtxt('firas_monopole_spec_v1.txt')
 #Columna 2: Espectro del monopolo medido por el instrumento FIRAS del satelite COBE [MJy/sr], donde 1 [MJy] = 10^−20 [Wm^−2Hz^−1] 
 #Columna 3: Espectro residual del monopolo [kJy/sr]
 #Columna 4: Incertidumbre del espectro medido [kJy/sr]
-#Columna 5: Modelo del espectro de la galaxia en los polos galácticos [kJy/sr]
+#Columna 5: Modelo del espectro de la galaxia en los polos galacticos [kJy/sr]
 
-#De estas columnas nos interesan las columnas 1 (frecuencia), 2 (esectro medido) y 4 (incertidumbre/error) para la
+#De estas columnas nos interesan las columnas 1 (frecuencia), 2 (espectro medido) y 4 (incertidumbre/error) para la
 #realizacion del grafico.
 
 frecuencia = archivo[:,0]*100*c          #primera columna, es de tipo np.ndarray
@@ -43,7 +43,7 @@ espectro = archivo[:,1]                              #segunda columna
 error = archivo[:,3]/1000                            #cuarta columna
 
 #Se tiene que el espectro medido esta en [MJy/sr] y el error en [kJy/sr], por lo que se divide el error por mil. La frecuencia
-#esta en [cm^-1], por lo que se ultiplica por 100 y por c para quedar en [1/s = Hz]
+#esta en [cm^-1], por lo que se multiplica por 100 y por c para quedar en [1/s = Hz]
 
 #Como el error es muy pequeño por la precision del FIRAS, se multiplica por 400 (factor sugerido como ejemplo en el enunciado)
 
@@ -116,7 +116,7 @@ def valor_integral(a,b, N=10 , toler=1e-7):
         N *= 2  #se duplica el numero de divisiones, disminuye a la mitad h
     return integral
 
-
+integral_2 = valor_integral(x_0,x_n)
 
 #Parte 3
 
@@ -148,9 +148,9 @@ for i in range(len(frecuencia)-1):
 
 T = (h/k_B)*((integral_espectro*c**2)/(valor_integral(x_0,x_n)*2*h))**(1/4)
 
-"""
+
 print('T =', T, '[K]')
-"""
+
 
 #Da T = 2.684 K, siendo que el valor real es 2.725 K, esto ocurre por arrastre de errores de aproximacion
 
